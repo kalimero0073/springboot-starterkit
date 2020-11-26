@@ -2,6 +2,7 @@ package com.starterkit.springboot.brs.security;
 
 import com.starterkit.springboot.brs.security.api.ApiJWTAuthenticationFilter;
 import com.starterkit.springboot.brs.security.api.ApiJWTAuthorizationFilter;
+import com.starterkit.springboot.brs.security.api.RestAuthenticationEntrypoint;
 import com.starterkit.springboot.brs.security.form.CustomAuthenticationSuccessHandler;
 import com.starterkit.springboot.brs.security.form.CustomLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class MultiHttpSecurityConfig {
 
         @Autowired
         private CustomUserDetailsService userDetailsService;
+        
+        @Autowired
+        RestAuthenticationEntrypoint restAuthenticationEntrypoint;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -52,7 +56,7 @@ public class MultiHttpSecurityConfig {
                     .authenticated()
                     .and()
                     .exceptionHandling()
-                    .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                    .authenticationEntryPoint(restAuthenticationEntrypoint)
                     .and()
                     .addFilter(new ApiJWTAuthenticationFilter(authenticationManager()))
                     .addFilter(new ApiJWTAuthorizationFilter(authenticationManager()))

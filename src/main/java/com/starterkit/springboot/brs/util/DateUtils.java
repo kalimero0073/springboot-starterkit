@@ -3,6 +3,8 @@ package com.starterkit.springboot.brs.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Created by Arpit Khandelwal.
  */
